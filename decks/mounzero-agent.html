@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MounZero Agent Deck</title>
+    <link
+      rel="stylesheet"
+      href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap"
+    />
+    <style>
+      /* === THEME === */
+      :root {
+        --bg-primary: #071019;
+        --bg-secondary: #0d1b24;
+        --panel: rgba(13, 27, 36, 0.72);
+        --panel-strong: rgba(3, 9, 14, 0.84);
+        --text-primary: #f4fff9;
+        --text-secondary: #a7beb8;
+        --muted: #66827b;
+        --accent: #00ffcc;
+        --accent-2: #ff3d71;
+        --accent-3: #ffd166;
+        --line: rgba(0, 255, 204, 0.18);
+        --danger: #ff3d71;
+        --ok: #00d68f;
+        --font-display: "Clash Display", sans-serif;
+        --font-body: "Satoshi", sans-serif;
+        --title-size: clamp(2rem, 6vw, 5.2rem);
+        --subtitle-size: clamp(0.88rem, 1.8vw, 1.35rem);
+        --h2-size: clamp(1.45rem, 4vw, 3.35rem);
+        --h3-size: clamp(0.98rem, 2vw, 1.5rem);
+        --body-size: clamp(0.76rem, 1.45vw, 1.08rem);
+        --small-size: clamp(0.62rem, 1vw, 0.82rem);
+        --slide-padding: clamp(1rem, 4vw, 4rem);
+        --content-gap: clamp(0.75rem, 2vw, 1.8rem);
+        --element-gap: clamp(0.45rem, 1vw, 0.9rem);
+        --radius: clamp(0.65rem, 1.2vw, 1rem);
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --duration-normal: 0.7s;
+      }
+
+      /* === RESET === */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* ===========================================
+         VIEWPORT FITTING: MANDATORY BASE STYLES
+         Include this ENTIRE file in every presentation.
+         These styles ensure slides fit exactly in the viewport.
+         =========================================== */
+
+      /* 1. Lock html/body to viewport */
+      html,
+      body {
+        height: 100%;
+        overflow-x: hidden;
+      }
+
+      html {
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+      }
+
+      /* 2. Each slide = exact viewport height */
+      .slide {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        overflow: hidden; /* CRITICAL: Prevent ANY overflow */
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      /* 3. Content container with flex for centering */
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-height: 100%;
+        overflow: hidden; /* Double-protection against overflow */
+        padding: var(--slide-padding);
+      }
+
+      /* 4. ALL typography uses clamp() for responsive scaling */
+      :root {
+        /* Titles scale from mobile to desktop */
+        --title-size: clamp(1.5rem, 5vw, 4rem);
+        --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+        --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+
+        /* Body text */
+        --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+        --small-size: clamp(0.65rem, 1vw, 0.875rem);
+
+        /* Spacing scales with viewport */
+        --slide-padding: clamp(1rem, 4vw, 4rem);
+        --content-gap: clamp(0.5rem, 2vw, 2rem);
+        --element-gap: clamp(0.25rem, 1vw, 1rem);
+      }
+
+      /* 5. Cards/containers use viewport-relative max sizes */
+      .card,
+      .container,
+      .content-box {
+        max-width: min(90vw, 1000px);
+        max-height: min(80vh, 700px);
+      }
+
+      /* 6. Lists auto-scale with viewport */
+      .feature-list,
+      .bullet-list {
+        gap: clamp(0.4rem, 1vh, 1rem);
+      }
+
+      .feature-list li,
+      .bullet-list li {
+        font-size: var(--body-size);
+        line-height: 1.4;
+      }
+
+      /* 7. Grids adapt to available space */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+        gap: clamp(0.5rem, 1.5vw, 1rem);
+      }
+
+      /* 8. Images constrained to viewport */
+      img,
+      .image-container {
+        max-width: 100%;
+        max-height: min(50vh, 400px);
+        object-fit: contain;
+      }
+
+      /* ===========================================
+         RESPONSIVE BREAKPOINTS
+         Aggressive scaling for smaller viewports
+         =========================================== */
+
+      /* Short viewports (< 700px height) */
+      @media (max-height: 700px) {
+        :root {
+          --slide-padding: clamp(0.75rem, 3vw, 2rem);
+          --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+          --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+          --h2-size: clamp(1rem, 3vw, 1.75rem);
+        }
+      }
+
+      /* Very short viewports (< 600px height) */
+      @media (max-height: 600px) {
+        :root {
+          --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+          --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+          --title-size: clamp(1.1rem, 4vw, 2rem);
+          --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+        }
+
+        /* Hide non-essential elements */
+        .nav-dots,
+        .keyboard-hint,
+        .decorative {
+          display: none;
+        }
+      }
+
+      /* Extremely short (landscape phones, < 500px height) */
+      @media (max-height: 500px) {
+        :root {
+          --slide-padding: clamp(0.4rem, 2vw, 1rem);
+          --title-size: clamp(1rem, 3.5vw, 1.5rem);
+          --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+          --body-size: clamp(0.65rem, 1vw, 0.85rem);
+        }
+      }
+
+      /* Narrow viewports (< 600px width) */
+      @media (max-width: 600px) {
+        :root {
+          --title-size: clamp(1.25rem, 7vw, 2.5rem);
+        }
+
+        /* Stack grids vertically */
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ===========================================
+         REDUCED MOTION
+         Respect user preferences
+         =========================================== */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.2s !important;
+        }
+
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
+      /* === GLOBAL SURFACE === */
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(0, 255, 204, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 204, 0.035) 1px, transparent 1px);
+        background-size: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem);
+        mask-image: radial-gradient(circle at 50% 45%, black, transparent 72%);
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 18% 20%, rgba(0, 255, 204, 0.18), transparent 28%),
+          radial-gradient(circle at 82% 72%, rgba(255, 61, 113, 0.16), transparent 30%),
+          linear-gradient(135deg, rgba(7, 16, 25, 0.1), rgba(2, 5, 8, 0.74));
+        z-index: 0;
+      }
+
+      /* === TYPOGRAPHY === */
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-size: var(--title-size);
+        max-width: min(90vw, 980px);
+      }
+
+      h2 {
+        font-size: var(--h2-size);
+        max-width: min(92vw, 920px);
+      }
+
+      h3 {
+        font-size: var(--h3-size);
+      }
+
+      p {
+        color: var(--text-secondary);
+        font-size: var(--body-size);
+        line-height: 1.45;
+      }
+
+      strong {
+        color: var(--text-primary);
+      }
+
+      /* === NAVIGATION === */
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: clamp(0.16rem, 0.35vh, 0.3rem);
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        z-index: 20;
+        transition: width 0.2s ease;
+      }
+
+      .nav-dots {
+        position: fixed;
+        right: clamp(0.6rem, 2vw, 1.2rem);
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: clamp(0.35rem, 1vh, 0.65rem);
+        z-index: 20;
+      }
+
+      .nav-dot {
+        width: clamp(0.44rem, 0.85vw, 0.62rem);
+        height: clamp(0.44rem, 0.85vw, 0.62rem);
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .nav-dot.active {
+        background: var(--accent);
+        box-shadow: 0 0 clamp(0.7rem, 1.5vw, 1.2rem) rgba(0, 255, 204, 0.75);
+      }
+
+      .keyboard-hint {
+        position: fixed;
+        bottom: clamp(0.7rem, 2vh, 1.2rem);
+        right: clamp(0.8rem, 2vw, 1.35rem);
+        color: var(--muted);
+        font-size: var(--small-size);
+        z-index: 18;
+      }
+
+      /* === ANIMATIONS === */
+      .reveal,
+      .reveal-left,
+      .reveal-scale {
+        opacity: 0;
+        transition:
+          opacity var(--duration-normal) var(--ease-out-expo),
+          transform var(--duration-normal) var(--ease-out-expo),
+          filter var(--duration-normal) var(--ease-out-expo);
+      }
+
+      .reveal {
+        transform: translateY(clamp(1rem, 4vh, 2rem));
+      }
+
+      .reveal-left {
+        transform: translateX(calc(-1 * clamp(1rem, 4vw, 2.5rem)));
+      }
+
+      .reveal-scale {
+        transform: scale(0.92);
+        filter: blur(clamp(0.2rem, 1vw, 0.6rem));
+      }
+
+      .visible .reveal,
+      .visible .reveal-left,
+      .visible .reveal-scale {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+        filter: blur(0);
+      }
+
+      .reveal:nth-child(2),
+      .reveal-left:nth-child(2),
+      .reveal-scale:nth-child(2) {
+        transition-delay: 0.1s;
+      }
+
+      .reveal:nth-child(3),
+      .reveal-left:nth-child(3),
+      .reveal-scale:nth-child(3) {
+        transition-delay: 0.2s;
+      }
+
+      .reveal:nth-child(4),
+      .reveal-left:nth-child(4),
+      .reveal-scale:nth-child(4) {
+        transition-delay: 0.3s;
+      }
+
+      @keyframes scan {
+        0% {
+          transform: translateY(calc(-1 * clamp(8rem, 25vh, 16rem)));
+        }
+        100% {
+          transform: translateY(clamp(20rem, 70vh, 44rem));
+        }
+      }
+
+      /* === LAYOUT UTILITIES === */
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(0, 255, 204, 0.05),
+          transparent
+        );
+        height: clamp(6rem, 18vh, 12rem);
+        animation: scan 7s linear infinite;
+        z-index: 1;
+      }
+
+      .slide-content {
+        position: relative;
+        z-index: 2;
+        gap: var(--content-gap);
+      }
+
+      .kicker {
+        color: var(--accent);
+        font-size: var(--small-size);
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .tagline {
+        max-width: min(84vw, 760px);
+        font-size: var(--subtitle-size);
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: clamp(1rem, 4vw, 3rem);
+        align-items: center;
+        min-height: 0;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--element-gap);
+        min-height: 0;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--radius);
+        padding: clamp(0.8rem, 2vw, 1.3rem);
+        box-shadow: 0 0 clamp(1rem, 3vw, 2.5rem) rgba(0, 255, 204, 0.08);
+        backdrop-filter: blur(clamp(0.4rem, 1vw, 0.8rem));
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(0.55rem, 1.4vw, 1rem);
+      }
+
+      .metric {
+        border-left: clamp(0.16rem, 0.35vw, 0.25rem) solid var(--accent);
+        background: var(--panel-strong);
+        padding: clamp(0.65rem, 1.5vw, 1rem);
+      }
+
+      .metric b {
+        display: block;
+        color: var(--text-primary);
+        font-family: var(--font-display);
+        font-size: clamp(1.4rem, 4vw, 3rem);
+        line-height: 0.95;
+      }
+
+      .metric span {
+        color: var(--text-secondary);
+        font-size: var(--small-size);
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: clamp(0.5rem, 1.5vw, 1rem);
+      }
+
+      .flow-step {
+        min-height: clamp(5.2rem, 18vh, 9rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .step-num {
+        color: var(--accent);
+        font-family: var(--font-display);
+        font-size: clamp(1.3rem, 3vw, 2rem);
+      }
+
+      .decision-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(0.75rem, 2vw, 1.4rem);
+      }
+
+      .decision {
+        min-height: clamp(10rem, 34vh, 18rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .decision.blocked {
+        border-color: rgba(255, 61, 113, 0.42);
+      }
+
+      .decision.approved {
+        border-color: rgba(0, 214, 143, 0.42);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        border: 1px solid currentColor;
+        padding: clamp(0.24rem, 0.7vw, 0.42rem) clamp(0.5rem, 1vw, 0.75rem);
+        border-radius: 999px;
+        font-size: var(--small-size);
+        font-weight: 700;
+      }
+
+      .blocked .status {
+        color: var(--danger);
+      }
+
+      .approved .status {
+        color: var(--ok);
+      }
+
+      .json-box {
+        font-family: "Satoshi", sans-serif;
+        color: #d6fff4;
+        font-size: clamp(0.62rem, 1.2vw, 0.88rem);
+        line-height: 1.5;
+        white-space: pre-line;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(0.4rem, 1vw, 0.7rem);
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        color: var(--text-secondary);
+        background: rgba(0, 255, 204, 0.05);
+        padding: clamp(0.28rem, 0.8vw, 0.45rem) clamp(0.55rem, 1.1vw, 0.8rem);
+        border-radius: 999px;
+        font-size: var(--small-size);
+      }
+
+      .code {
+        border-left: clamp(0.16rem, 0.35vw, 0.25rem) solid var(--accent-3);
+        font-size: clamp(0.66rem, 1.25vw, 0.92rem);
+        color: #eafef8;
+        line-height: 1.55;
+        white-space: pre-line;
+      }
+
+      .terminal {
+        position: relative;
+        min-height: clamp(15rem, 48vh, 28rem);
+      }
+
+      .terminal::before {
+        content: "AI SPENDING GATE";
+        position: absolute;
+        top: clamp(0.75rem, 1.8vw, 1.1rem);
+        right: clamp(0.75rem, 1.8vw, 1.1rem);
+        color: var(--muted);
+        font-size: var(--small-size);
+        font-weight: 700;
+      }
+
+      .orbital {
+        position: absolute;
+        inset: clamp(1rem, 3vw, 2rem);
+        border: 1px solid rgba(0, 255, 204, 0.25);
+        border-radius: 50%;
+      }
+
+      .orbital:nth-child(2) {
+        inset: clamp(2.2rem, 6vw, 4.3rem);
+        border-color: rgba(255, 61, 113, 0.24);
+        transform: rotate(18deg);
+      }
+
+      .core {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: clamp(7rem, 18vw, 13rem);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, rgba(0, 255, 204, 0.65), rgba(0, 255, 204, 0.08) 48%, transparent 70%),
+          rgba(0, 255, 204, 0.04);
+        box-shadow: 0 0 clamp(2rem, 6vw, 4rem) rgba(0, 255, 204, 0.28);
+      }
+
+      .core span {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: var(--bg-primary);
+        font-family: var(--font-display);
+        font-size: clamp(1rem, 2.5vw, 1.8rem);
+      }
+
+      .quote {
+        font-family: var(--font-display);
+        font-size: clamp(1.6rem, 4.6vw, 4.3rem);
+        line-height: 1.02;
+        max-width: min(92vw, 980px);
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      .danger {
+        color: var(--danger);
+      }
+
+      .video-stage {
+        width: min(88vw, 980px);
+        aspect-ratio: 16 / 9;
+        max-height: min(54vh, 520px);
+        border: 1px solid rgba(0, 255, 204, 0.34);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: rgba(3, 9, 14, 0.88);
+        box-shadow:
+          0 0 clamp(1rem, 4vw, 3rem) rgba(0, 255, 204, 0.14),
+          inset 0 0 clamp(1rem, 3vw, 2.2rem) rgba(0, 255, 204, 0.06);
+      }
+
+      .video-stage iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+
+      .demo-link {
+        width: fit-content;
+        color: var(--bg-primary);
+        background: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 999px;
+        padding: clamp(0.42rem, 1vw, 0.65rem) clamp(0.8rem, 1.8vw, 1.2rem);
+        font-size: var(--small-size);
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 0 clamp(0.75rem, 2vw, 1.5rem) rgba(0, 255, 204, 0.22);
+      }
+
+      /* === RESPONSIVE REFINEMENTS === */
+      @media (max-width: 780px) {
+        .split,
+        .decision-grid,
+        .flow,
+        .metric-row {
+          grid-template-columns: 1fr;
+        }
+
+        .flow {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .terminal {
+          min-height: clamp(10rem, 34vh, 15rem);
+        }
+
+        .video-stage {
+          width: min(88vw, 720px);
+          max-height: min(48vh, 380px);
+        }
+      }
+
+      @media (max-height: 650px) {
+        .terminal {
+          min-height: clamp(8rem, 32vh, 13rem);
+        }
+
+        .flow-step,
+        .decision {
+          min-height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- === PRESENTATION CHROME === -->
+    <div class="progress-bar" aria-hidden="true"></div>
+    <nav class="nav-dots" aria-label="Slide navigation"></nav>
+    <div class="keyboard-hint">Arrow keys / Space / Swipe</div>
+
+    <!-- === SLIDE 1: TITLE === -->
+    <section class="slide title-slide">
+      <div class="slide-content">
+        <p class="kicker reveal">MounZero Agent</p>
+        <h1 class="reveal">Emotional spending needs a real-time brake.</h1>
+        <p class="tagline reveal">
+          AI decisioning plus x402-style payment friction turns impulsive
+          checkout into an intentional action.
+        </p>
+      </div>
+    </section>
+
+    <!-- === SLIDE 2: PROBLEM === -->
+    <section class="slide">
+      <div class="slide-content split">
+        <div class="stack">
+          <p class="kicker reveal-left">Problem</p>
+          <h2 class="reveal-left">Most budgeting tools arrive after the damage.</h2>
+          <p class="reveal-left">
+            The highest-risk moment is not the monthly report. It is the
+            seconds between craving, stress, and checkout.
+          </p>
+        </div>
+        <div class="stack">
+          <div class="metric-row reveal-scale">
+            <div class="metric"><b>1</b><span>urge is entered</span></div>
+            <div class="metric"><b>AI</b><span>classifies intent</span></div>
+            <div class="metric"><b>402</b><span>adds friction</span></div>
+          </div>
+          <div class="panel reveal-scale">
+            <p>
+              MounZero moves the intervention from "what did I spend?" to
+              "should this happen right now?"
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 3: DEMO VIDEO === -->
+    <section class="slide">
+      <div class="slide-content">
+        <p class="kicker reveal">Demo</p>
+        <h2 class="reveal">See the gatekeeper in action.</h2>
+        <div class="video-stage reveal-scale">
+          <iframe
+            src="https://www.youtube.com/embed/pSxVU01k-tE"
+            title="MounZero Agent demo video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <a
+          class="demo-link reveal"
+          href="https://youtu.be/pSxVU01k-tE"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open demo video
+        </a>
+      </div>
+    </section>
+
+    <!-- === SLIDE 4: PRODUCT === -->
+    <section class="slide">
+      <div class="slide-content split">
+        <div class="stack">
+          <p class="kicker reveal-left">Product</p>
+          <h2 class="reveal-left">An AI spending gatekeeper before payment.</h2>
+          <p class="reveal-left">
+            The user describes a spending urge. The agent returns a structured
+            decision, risk level, category, confidence, and a concrete next step.
+          </p>
+          <div class="chip-row reveal-left">
+            <span class="chip">emotional spending</span>
+            <span class="chip">late-night food</span>
+            <span class="chip">essential purchase</span>
+            <span class="chip">education</span>
+            <span class="chip">bills</span>
+          </div>
+        </div>
+        <div class="panel terminal reveal-scale">
+          <div class="orbital decorative"></div>
+          <div class="orbital decorative"></div>
+          <div class="core"><span>BLOCK?</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 5: DECISION ENGINE === -->
+    <section class="slide">
+      <div class="slide-content">
+        <p class="kicker reveal">Decision Engine</p>
+        <h2 class="reveal">Two outcomes, no vague advice.</h2>
+        <div class="decision-grid">
+          <div class="panel decision blocked reveal-scale">
+            <span class="status">BLOCKED</span>
+            <h3>Emotion plus unnecessary spend</h3>
+            <p>
+              Stress, boredom, craving, delivery food, sugary drinks, junk food,
+              and impulse buying trigger a high-risk stop.
+            </p>
+            <p><strong>Output:</strong> alternative action + saved amount.</p>
+          </div>
+          <div class="panel decision approved reveal-scale">
+            <span class="status">APPROVED</span>
+            <h3>Clear need or essential purchase</h3>
+            <p>
+              School, work, health, bills, transportation, or essential living
+              can proceed after wallet and payment confirmation.
+            </p>
+            <p><strong>Output:</strong> x402 payment-required step.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 6: X402 FLOW === -->
+    <section class="slide">
+      <div class="slide-content">
+        <p class="kicker reveal">Payment Flow</p>
+        <h2 class="reveal">Approved does not mean automatic.</h2>
+        <div class="flow">
+          <div class="panel flow-step reveal-scale">
+            <span class="step-num">01</span>
+            <h3>Connect wallet</h3>
+            <p>MetaMask account becomes the payment identity.</p>
+          </div>
+          <div class="panel flow-step reveal-scale">
+            <span class="step-num">02</span>
+            <h3>Require payment</h3>
+            <p>The UI enters a 402 Payment Required state.</p>
+          </div>
+          <div class="panel flow-step reveal-scale">
+            <span class="step-num">03</span>
+            <h3>Confirm transaction</h3>
+            <p>USDC on Base is the intended settlement path.</p>
+          </div>
+          <div class="panel flow-step reveal-scale">
+            <span class="step-num">04</span>
+            <h3>Complete action</h3>
+            <p>The purchase continues only after deliberate confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 7: IMPLEMENTATION === -->
+    <section class="slide">
+      <div class="slide-content split">
+        <div class="stack">
+          <p class="kicker reveal-left">Implementation</p>
+          <h2 class="reveal-left">A demo stack that can become onchain.</h2>
+          <p class="reveal-left">
+            Next.js App Router handles the interface and agent route. The API
+            calls Flock chat completions and forces JSON-only decision output.
+          </p>
+        </div>
+        <div class="panel code reveal-scale">
+POST /api/agent
+model: qwen3-30b-a3b-instruct-2507
+decision: BLOCKED | APPROVED
+category: emotional_spending | health | bills
+risk_level: LOW | MEDIUM | HIGH
+wallet: MetaMask
+target network: Base
+payment token: USDC
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 8: BEHAVIOR LOOP === -->
+    <section class="slide">
+      <div class="slide-content split">
+        <div class="stack">
+          <p class="kicker reveal-left">Behavior Loop</p>
+          <h2 class="reveal-left">The user sees progress, not just denial.</h2>
+          <p class="reveal-left">
+            Blocking is paired with suggested action and weekly tracking, so the
+            product can reinforce better patterns over time.
+          </p>
+        </div>
+        <div class="stack">
+          <div class="panel reveal-scale">
+            <h3>This week</h3>
+            <p><strong>3</strong> impulse attempts blocked</p>
+            <p><strong>$36</strong> estimated saved</p>
+          </div>
+          <div class="panel reveal-scale">
+            <p>
+              Future versions can add real USDC payments, escrow, spending
+              limits, AI budgeting, and behavioral scoring.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SLIDE 9: CLOSE === -->
+    <section class="slide">
+      <div class="slide-content">
+        <p class="kicker reveal">Vision</p>
+        <div class="quote reveal-scale">
+          Make spending a <span class="accent">conscious action</span>, not an
+          emotional reaction.
+        </div>
+        <p class="tagline reveal">
+          MounZero Agent combines AI judgment, wallet identity, and payment
+          friction at the exact moment intent becomes money.
+        </p>
+      </div>
+    </section>
+
+    <script>
+      /* === SLIDE PRESENTATION CONTROLLER === */
+      class SlidePresentation {
+        constructor() {
+          this.slides = Array.from(document.querySelectorAll(".slide"));
+          this.currentSlide = 0;
+          this.navDotsContainer = document.querySelector(".nav-dots");
+          this.progressBar = document.querySelector(".progress-bar");
+          this.touchStartY = 0;
+          this.wheelLocked = false;
+          this.setupIntersectionObserver();
+          this.setupKeyboardNav();
+          this.setupTouchNav();
+          this.setupWheelNav();
+          this.setupProgressBar();
+          this.setupNavDots();
+          this.goToSlide(0, false);
+        }
+
+        setupIntersectionObserver() {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visible");
+                  this.currentSlide = this.slides.indexOf(entry.target);
+                  this.updateProgress();
+                  this.updateDots();
+                }
+              });
+            },
+            { threshold: 0.58 }
+          );
+
+          this.slides.forEach((slide) => observer.observe(slide));
+        }
+
+        setupKeyboardNav() {
+          document.addEventListener("keydown", (event) => {
+            const nextKeys = ["ArrowDown", "ArrowRight", " ", "PageDown"];
+            const prevKeys = ["ArrowUp", "ArrowLeft", "PageUp"];
+
+            if (nextKeys.includes(event.key)) {
+              event.preventDefault();
+              this.goToSlide(this.currentSlide + 1);
+            }
+
+            if (prevKeys.includes(event.key)) {
+              event.preventDefault();
+              this.goToSlide(this.currentSlide - 1);
+            }
+          });
+        }
+
+        setupTouchNav() {
+          document.addEventListener(
+            "touchstart",
+            (event) => {
+              this.touchStartY = event.changedTouches[0].clientY;
+            },
+            { passive: true }
+          );
+
+          document.addEventListener(
+            "touchend",
+            (event) => {
+              const diff = this.touchStartY - event.changedTouches[0].clientY;
+              if (Math.abs(diff) < 40) return;
+              this.goToSlide(this.currentSlide + (diff > 0 ? 1 : -1));
+            },
+            { passive: true }
+          );
+        }
+
+        setupWheelNav() {
+          document.addEventListener(
+            "wheel",
+            (event) => {
+              if (this.wheelLocked || Math.abs(event.deltaY) < 20) return;
+              this.wheelLocked = true;
+              this.goToSlide(this.currentSlide + (event.deltaY > 0 ? 1 : -1));
+              window.setTimeout(() => {
+                this.wheelLocked = false;
+              }, 650);
+            },
+            { passive: true }
+          );
+        }
+
+        setupProgressBar() {
+          window.addEventListener("scroll", () => this.updateProgress(), {
+            passive: true,
+          });
+        }
+
+        setupNavDots() {
+          this.navDotsContainer.innerHTML = "";
+          this.slides.forEach((_, index) => {
+            const button = document.createElement("button");
+            button.className = "nav-dot";
+            button.type = "button";
+            button.setAttribute("aria-label", `Go to slide ${index + 1}`);
+            button.addEventListener("click", () => this.goToSlide(index));
+            this.navDotsContainer.appendChild(button);
+          });
+          this.updateDots();
+        }
+
+        goToSlide(index, smooth = true) {
+          const target = Math.max(0, Math.min(index, this.slides.length - 1));
+          this.currentSlide = target;
+          this.slides[target].scrollIntoView({
+            behavior: smooth ? "smooth" : "auto",
+            block: "start",
+          });
+          this.updateProgress();
+          this.updateDots();
+        }
+
+        updateProgress() {
+          const percent =
+            this.slides.length <= 1
+              ? 100
+              : (this.currentSlide / (this.slides.length - 1)) * 100;
+          this.progressBar.style.width = `${percent}%`;
+        }
+
+        updateDots() {
+          const dots = Array.from(document.querySelectorAll(".nav-dot"));
+          dots.forEach((dot, index) => {
+            dot.classList.toggle("active", index === this.currentSlide);
+          });
+        }
+      }
+
+      new SlidePresentation();
+    </script>
+  </body>
+</html>
